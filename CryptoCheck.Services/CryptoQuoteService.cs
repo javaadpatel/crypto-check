@@ -32,12 +32,13 @@ namespace CryptoCheck.Services
 
         public async Task<CryptoQuote> GenerateQuoteAsync(CryptoQuoteRequest cryptoQuoteRequest)
         {
-            //TODO: do these in parallel
-            var cryptoCurrencyPriceQuote = await _cryptoPriceService.GetCryptoPriceAsync(cryptoQuoteRequest.Symbol);
+            var cryptoCurrencyPriceQuoteTask = _cryptoPriceService.GetCryptoPriceAsync(cryptoQuoteRequest.Symbol);
 
-            var exchangeRates = await _exchangeRateService.GetExchangeRatesAsync(_baseCurrencySymbol, _conversionCurrencySymbols);
+            var exchangeRatesTask = _exchangeRateService.GetExchangeRatesAsync(_baseCurrencySymbol, _conversionCurrencySymbols);
 
-            return CreateQuote(cryptoCurrencyPriceQuote, exchangeRates);
+            await Task.WhenAll(cryptoCurrencyPriceQuoteTask, cryptoCurrencyPriceQuoteTask);
+
+            return CreateQuote(cryptoCurrencyPriceQuoteTask.Result, exchangeRatesTask.Result);
         }
 
         //may want to map to domain models so you don't take a deep reliance on coin market cap
@@ -66,6 +67,7 @@ namespace CryptoCheck.Services
 
             return new CryptoQuote
             {
+                Name = cryptoCurrencyPrice.Name,
                 Symbol = cryptoCurrencyPrice.CryptoSymbol,
                 CurrencyQuotes = currencyQuotes,
                 IsCachedResponse = false,
