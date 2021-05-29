@@ -31,7 +31,6 @@ namespace CryptoCheck.Services.CoinMarketCap.Models
 
     public class Quote
     {
-        [JsonProperty("USD")]
         public CurrencyQuote CurrencyQuote { get; set; }
     }
 
@@ -41,28 +40,28 @@ namespace CryptoCheck.Services.CoinMarketCap.Models
         public decimal Price { get; set; }
 
         [JsonProperty("volume_24h")]
-        public double Volume24H { get; set; }
+        public decimal Volume24H { get; set; }
 
         [JsonProperty("percent_change_1h")]
-        public double PercentChange1H { get; set; }
+        public decimal PercentChange1H { get; set; }
 
         [JsonProperty("percent_change_24h")]
-        public double PercentChange24H { get; set; }
+        public decimal PercentChange24H { get; set; }
 
         [JsonProperty("percent_change_7d")]
-        public double PercentChange7D { get; set; }
+        public decimal PercentChange7D { get; set; }
 
         [JsonProperty("percent_change_30d")]
-        public double PercentChange30D { get; set; }
+        public decimal PercentChange30D { get; set; }
 
         [JsonProperty("percent_change_60d")]
-        public double PercentChange60D { get; set; }
+        public decimal PercentChange60D { get; set; }
 
         [JsonProperty("percent_change_90d")]
-        public double PercentChange90D { get; set; }
+        public decimal PercentChange90D { get; set; }
 
         [JsonProperty("market_cap")]
-        public double MarketCap { get; set; }
+        public decimal MarketCap { get; set; }
 
         [JsonProperty("last_updated")]
         public DateTimeOffset LastUpdated { get; set; }

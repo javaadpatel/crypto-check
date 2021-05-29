@@ -40,7 +40,6 @@ namespace CryptoCheck.AutoMapper.Tests
             var cryptoCurrencyPrice = new CryptoCurrencyPrice()
             {
                 CryptoSymbol = "BTC",
-                CurrencySymbol = "USD",
                 Name = "Bitcoin",
                 Price = 100.12m,
                 LastUpdated = timeNow
@@ -54,7 +53,6 @@ namespace CryptoCheck.AutoMapper.Tests
             Assert.That(timeNow, Is.EqualTo(result.LastUpdated).Within(TimeSpan.FromMinutes(1.0)));
             Assert.AreEqual(100.12, result.Price);
             Assert.AreEqual("Bitcoin", result.Name);
-            Assert.AreEqual("USD", result.CurrencySymbol);
         }
     }
 }

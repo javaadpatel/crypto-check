@@ -20,23 +20,17 @@ namespace CryptoCheck.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<T> ExecuteRequest<T>(HttpClient httpClient, Uri uri, string jsonPath)
+        public async Task<string> ExecuteRequest(HttpClient httpClient, Uri uri)
         {
             HttpResponseMessage response;
             string responseContent;
             HttpStatusCode responseStatusCode;
-            T result;
             try
             {
                 response = await httpClient.GetAsync(uri);
                 responseStatusCode = response.StatusCode;
                 responseContent = await response.Content.ReadAsStringAsync();
-
-                var jToken = JToken.Parse(responseContent);
-
-                result = JsonConvert.DeserializeObject<T>(jToken.SelectToken(jsonPath)?.ToString());
-
-                return result;
+                return responseContent;
             }
             catch (Exception ex)
             {
