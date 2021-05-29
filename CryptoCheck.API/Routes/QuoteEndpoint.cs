@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using FluentValidation;
 using System.Linq;
+using System.Net.Http;
 
 namespace CryptoCheck.API.Routes
 {
@@ -31,10 +32,11 @@ namespace CryptoCheck.API.Routes
         [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(CryptoQuote))]
         [FunctionName(nameof(QuoteEndpoint) + "_" + nameof(Quote))]
         public async Task<IActionResult> Quote(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "quote")] CryptoQuoteRequest cryptoQuoteRequest,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "quote/{symbol}")] HttpRequestMessage httpRequest,
+            string symbol,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            var cryptoQuoteRequest = new CryptoQuoteRequest(symbol);
 
             var validationResult = _quoteRequestValidator.Validate(cryptoQuoteRequest);
 

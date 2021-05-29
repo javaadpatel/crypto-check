@@ -9,6 +9,11 @@ namespace CryptoCheck.Core.Models
     public class CryptoQuote
     {
         /// <summary>
+        /// The crytocurrency name (eg. Bitcoin, Ethereum)
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// The cryptocurrency symbol (eg. BTC, ETH)
         /// </summary>
         public string Symbol { get; set; }
