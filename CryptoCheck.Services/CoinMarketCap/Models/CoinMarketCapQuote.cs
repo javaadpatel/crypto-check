@@ -38,7 +38,7 @@ namespace CryptoCheck.Services.CoinMarketCap.Models
     public class CurrencyQuote
     {
         [JsonProperty("price")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [JsonProperty("volume_24h")]
         public double Volume24H { get; set; }

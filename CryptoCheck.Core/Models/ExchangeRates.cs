@@ -12,6 +12,6 @@ namespace CryptoCheck.Core.Models
 
         public DateTimeOffset Date { get; set; }
 
-        public Dictionary<string, double> Rates { get; set; }
+        public Dictionary<string, decimal> Rates { get; set; }
     }
 }

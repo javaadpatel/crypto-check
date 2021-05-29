@@ -68,7 +68,7 @@ namespace CryptoCheck.Services.Tests
                 {
                     CurrencyQuote = new CoinMarketCap.Models.CurrencyQuote
                     {
-                        Price = 100.12
+                        Price = 100.12m
                     }
                 },
                 LastUpdated = timeNow
@@ -78,7 +78,7 @@ namespace CryptoCheck.Services.Tests
                 CryptoSymbol = "BTC",
                 CurrencySymbol = "USD",
                 Name = "Bitcoin",
-                Price = 100.12,
+                Price = 100.12m,
                 LastUpdated = timeNow
             };
 

@@ -58,7 +58,7 @@ namespace CryptoCheck.Services
             var cryptoPriceInExchangeRateBase = cryptoCurrencyPrice.Price * conversionRatioFromExchangeBaseToCryptoCurrencyBase;
 
             //loop and convert all currencies
-            var currencyQuotes = new Dictionary<string, double>();
+            var currencyQuotes = new Dictionary<string, decimal>();
 
             foreach (var exchangeRate in exchangeRates.Rates)
             {
