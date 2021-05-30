@@ -19,6 +19,10 @@ namespace CryptoCheck.AutoMapper.Profiles
                     dest => dest.CryptoSymbol,
                     opt => opt.MapFrom(src => src.Symbol)
                 );
+
+
+            CreateMap<Core.Models.CryptoCurrency, Services.CoinMarketCap.Models.CoinMarketCapCryptoCurrencyMap>()
+                .ReverseMap();
         }
     }
 }

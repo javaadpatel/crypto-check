@@ -64,5 +64,23 @@ namespace CryptoCheck.Services.CoinMarketCap
 
             return cryptoCurrencyPrice;
         }
+
+        public async Task<IList<CryptoCurrency>> GetAllCryptoCurrencies()
+        {
+            //construct request uri
+            var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/map");
+
+            //get raw string response
+            var quoteResponseString = await _apiBaseService.ExecuteRequest(_httpClient, uri);
+
+            //extract 
+            var cryptoCurrencysonPathSelector = $@"$.data";
+            var jToken = JToken.Parse(quoteResponseString);
+            var cryptoCurrencyMaps = JsonConvert.DeserializeObject<List<Models.CoinMarketCapCryptoCurrencyMap>>(jToken.SelectToken(cryptoCurrencysonPathSelector)?.ToString());
+
+            var cryptoCurrencies = _mapper.Map<List<CryptoCurrency>> (cryptoCurrencyMaps);
+
+            return cryptoCurrencies;
+        }
     }
 }
