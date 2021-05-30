@@ -60,7 +60,7 @@ export class CryptoCheckProvider extends Component<{}, IState> {
         `/quote/${symbol}`,
         {
           params: {
-            code: "code",
+            code: Config.cryptocheck_api_code,
           },
         }
       );

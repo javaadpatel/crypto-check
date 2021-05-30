@@ -37,7 +37,7 @@ namespace CryptoCheck.API.Routes
         public async Task<IActionResult> Quote(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "quote/{symbol}")] HttpRequestMessage httpRequest,
             string symbol,
-            ILogger log)
+            ILogger logger)
         {
             var cryptoQuoteRequest = new CryptoQuoteRequest(symbol);
 
@@ -53,6 +53,12 @@ namespace CryptoCheck.API.Routes
 
             try
             {
+                //first check if the cryptocurrency symbol is legitimate
+                if (!(await GetCryptoCurrenciesBySymbol(symbol)).Any())
+                {
+                    return new BadRequestObjectResult(new { Message = $"No cryptocurrency with the symbol '{cryptoQuoteRequest.Symbol}' could be found. Please check your spelling and try again." });
+                }
+
                 var quote = await _cryptoQuoteService.GenerateQuoteAsync(cryptoQuoteRequest);
                 return new OkObjectResult(quote);
             }
@@ -70,15 +76,22 @@ namespace CryptoCheck.API.Routes
         public async Task<IActionResult> Search(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{searchTerm}")] HttpRequestMessage httpRequest,
             string searchTerm,
-            ILogger log
+            ILogger logger
         )
+        {
+            List<CryptoCurrency> possibleCryptoCurrencies = await GetCryptoCurrenciesBySymbol(searchTerm);
+
+            return new OkObjectResult(possibleCryptoCurrencies);
+        }
+
+        private async Task<List<CryptoCurrency>> GetCryptoCurrenciesBySymbol(string searchTerm)
         {
             var allCryptoCurrencies = await _cryptoPriceService.GetAllCryptoCurrencies();
 
             var possibleCryptoCurrencies = allCryptoCurrencies.Where(c => c.Symbol.Contains(searchTerm.ToUpper())).ToList();
 
-            return new OkObjectResult(possibleCryptoCurrencies);
+            return possibleCryptoCurrencies;
         }
-    
+
     }
 }

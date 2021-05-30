@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using CryptoCheck.AutoMapper.Builders;
 using CryptoCheck.Services.ExchangeRatesApi;
 using CryptoCheck.Services.CoinMarketCap;
+using System.Diagnostics;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace CryptoCheck.API.Configuration
@@ -71,6 +72,23 @@ namespace CryptoCheck.API.Configuration
             //register automapper
             builder.Services.AddSingleton(sp => MapperBuilder.Mapper);
             builder.Services.AddSingleton(sp => MapperBuilder.ConfigurationProvider);
+
+            //register cache
+            builder.Services.AddSingleton<ICacheService, CacheService>();
+            if (Debugger.IsAttached)
+            {
+                builder.Services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                builder.Services.AddDistributedMemoryCache();
+                //TODO: implement when using redis
+                //services.AddStackExchangeRedisCache(options =>
+                //{
+                //    options.Configuration = Environment.GetEnvironmentVariable("cache:connectionString");
+                //    options.InstanceName = Environment.GetEnvironmentVariable("cache:instanceName");
+                //});
+            }
         }
     }
 }

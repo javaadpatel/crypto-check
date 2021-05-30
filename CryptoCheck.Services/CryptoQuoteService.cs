@@ -36,14 +36,11 @@ namespace CryptoCheck.Services
 
             var exchangeRatesTask = _exchangeRateService.GetExchangeRatesAsync(_baseCurrencySymbol, _conversionCurrencySymbols);
 
-            //return new CryptoQuote();
-
             await Task.WhenAll(cryptoCurrencyPriceQuoteTask, cryptoCurrencyPriceQuoteTask);
 
             return CreateQuote(cryptoCurrencyPriceQuoteTask.Result, exchangeRatesTask.Result);
         }
 
-        //may want to map to domain models so you don't take a deep reliance on coin market cap
 
         private CryptoQuote CreateQuote(CryptoCurrencyPrice cryptoCurrencyPrice, ExchangeRates exchangeRates)
         {
@@ -63,7 +60,6 @@ namespace CryptoCheck.Services
             {
                 conversionRatioFromExchangeBaseToCryptoCurrencyBase = exchangeRates.Rates[exchangeBaseCurrencySymbol]/exchangeRates.Rates[cryptoCurrencyPriceSymbol];
             }
-
 
             //convert the crypto price to the base exchange rate
             var cryptoPriceInExchangeRateBase = cryptoCurrencyPrice.Price * conversionRatioFromExchangeBaseToCryptoCurrencyBase;

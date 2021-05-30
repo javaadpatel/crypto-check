@@ -1,8 +1,8 @@
 import moment from "moment";
 import { Card, Icon, Item, Table, Message } from "semantic-ui-react";
-import { useCryptoCheck } from "../../Contexts/CryptoCheck-Context";
-import { CryptoQuote } from "../../Models/Api/CryptoQuote";
-import { CryptoQuoteError } from "../../Models/Api/CryptoQuoteError";
+import { useCryptoCheck } from "../../../Contexts/CryptoCheck-Context";
+import { CryptoQuote } from "../../../Models/Api/CryptoQuote";
+import { CryptoQuoteError } from "../../../Models/Api/CryptoQuoteError";
 
 const QuoteInfoCard = () => {
   const {
@@ -14,13 +14,13 @@ const QuoteInfoCard = () => {
   const renderCryptoInformation = (quote: CryptoQuote) => {
     return (
       <>
-        <p>
+        <p data-testid="name">
           <strong>Name:</strong> {quote.name}
         </p>
-        <p>
+        <p data-testid="symbol">
           <strong>Symbol:</strong> {quote.symbol}
         </p>
-        <p>
+        <p data-testid="issuedAt">
           <strong>Last refreshed at:</strong>{" "}
           {moment(quote.issuedAt).toLocaleString()}
         </p>
@@ -31,7 +31,7 @@ const QuoteInfoCard = () => {
   const renderCryptoPrices = (quotes: { [symbol: string]: number }) => {
     return (
       <>
-        <Table basic="very" celled>
+        <Table basic="very" celled data-testid="currencyQuotes">
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Currency</Table.HeaderCell>
@@ -58,7 +58,7 @@ const QuoteInfoCard = () => {
     return (
       <Message negative>
         <Message.Header>Sorry, couldn't retrieve your quote.</Message.Header>
-        <p>{error.message}</p>
+        <p data-testid="error">{error.message}</p>
       </Message>
     );
   };

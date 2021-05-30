@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import { Form, Button, Message, Input } from "semantic-ui-react";
 import * as yup from "yup";
 import _ from "lodash";
-import { useCryptoCheck } from "../../Contexts/CryptoCheck-Context";
+import { useCryptoCheck } from "../../../Contexts/CryptoCheck-Context";
 
 const QuoteForm = () => {
   const { getQuote } = useCryptoCheck();
@@ -35,7 +35,12 @@ const QuoteForm = () => {
       }) => (
         <>
           {touched.symbol && errors.symbol && (
-            <Message error content={errors.symbol} attached />
+            <Message
+              data-testid="symbolError"
+              error
+              content={errors.symbol}
+              attached
+            />
           )}
           <Form loading={isSubmitting} onSubmit={handleSubmit}>
             <Form.Input
@@ -43,6 +48,7 @@ const QuoteForm = () => {
               id="symbol"
               label="Which cryptocurrency do you want to check the price of?"
               {...getFieldProps("symbol")}
+              placeholder="BTC"
             />
             <Button
               primary
