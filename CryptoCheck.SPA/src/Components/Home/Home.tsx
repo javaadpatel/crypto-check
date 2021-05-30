@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Segment } from "semantic-ui-react";
-import QuoteForm from "./QuoteForm";
-import QuoteInfoCard from "./QuoteInfoCard";
+import QuoteForm from "./QuoteForm/QuoteForm";
+import QuoteInfoCard from "./QuoteInfoCard/QuoteInfoCard";
 
 function Home() {
   return (
