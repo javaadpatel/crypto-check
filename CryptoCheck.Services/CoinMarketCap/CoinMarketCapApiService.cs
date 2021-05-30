@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CryptoCheck.Services.CoinMarketCap
@@ -19,19 +20,21 @@ namespace CryptoCheck.Services.CoinMarketCap
         private readonly HttpClient _httpClient;
         private readonly IMapper _mapper;
         private readonly IApiBaseService _apiBaseService;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<ICryptoPriceService> _logger;
         private readonly string _baseUrl;
         private readonly string _auxFields;
         private readonly string _baseCurrencySymbol;
 
-        public CoinMarketCapApiService(HttpClient httpClient, IMapper mapper, IConfiguration configuration, IApiBaseService apiBaseService, ILogger<ICryptoPriceService> logger)
+        public CoinMarketCapApiService(HttpClient httpClient, IMapper mapper, IConfiguration configuration, IApiBaseService apiBaseService, ICacheService cacheService, ILogger<ICryptoPriceService> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _apiBaseService = apiBaseService ?? throw new ArgumentNullException(nameof(apiBaseService));
+            _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _ = configuration ?? throw new ArgumentNullException(nameof(configuration)); 
+            _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _baseUrl = configuration["coinMarketCapApi:baseUrl"];
             _auxFields = configuration["coinMarketCapApi:auxFields"];
             _baseCurrencySymbol = configuration["coinMarketCapApi:baseCurrencySymbol"];
@@ -67,20 +70,27 @@ namespace CryptoCheck.Services.CoinMarketCap
 
         public async Task<IList<CryptoCurrency>> GetAllCryptoCurrencies()
         {
-            //construct request uri
-            var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/map");
+            var allCryptoCurrencies = await _cacheService.GetItemAsync<List<CryptoCurrency>>("cryptocurrencies", getCryptoCurrencies, new CancellationToken());
 
-            //get raw string response
-            var quoteResponseString = await _apiBaseService.ExecuteRequest(_httpClient, uri);
+            async Task<List<CryptoCurrency>> getCryptoCurrencies()
+            {
+                //construct request uri
+                var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/map");
 
-            //extract 
-            var cryptoCurrencysonPathSelector = $@"$.data";
-            var jToken = JToken.Parse(quoteResponseString);
-            var cryptoCurrencyMaps = JsonConvert.DeserializeObject<List<Models.CoinMarketCapCryptoCurrencyMap>>(jToken.SelectToken(cryptoCurrencysonPathSelector)?.ToString());
+                //get raw string response
+                var quoteResponseString = await _apiBaseService.ExecuteRequest(_httpClient, uri);
 
-            var cryptoCurrencies = _mapper.Map<List<CryptoCurrency>> (cryptoCurrencyMaps);
+                //extract 
+                var cryptoCurrencysonPathSelector = $@"$.data";
+                var jToken = JToken.Parse(quoteResponseString);
+                var cryptoCurrencyMaps = JsonConvert.DeserializeObject<List<Models.CoinMarketCapCryptoCurrencyMap>>(jToken.SelectToken(cryptoCurrencysonPathSelector)?.ToString());
 
-            return cryptoCurrencies;
+                var cryptoCurrencies = _mapper.Map<List<CryptoCurrency>>(cryptoCurrencyMaps);
+
+                return cryptoCurrencies;
+            }
+
+            return allCryptoCurrencies;
         }
     }
 }
