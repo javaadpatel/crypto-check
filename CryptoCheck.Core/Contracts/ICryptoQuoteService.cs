@@ -9,7 +9,6 @@ namespace CryptoCheck.Core.Contracts
 {
     public interface ICryptoQuoteService
     {
-
         Task<CryptoQuote> GenerateQuoteAsync(CryptoQuoteRequest cryptoQuoteRequest);
     }
 }

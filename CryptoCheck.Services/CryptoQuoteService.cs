@@ -36,6 +36,8 @@ namespace CryptoCheck.Services
 
             var exchangeRatesTask = _exchangeRateService.GetExchangeRatesAsync(_baseCurrencySymbol, _conversionCurrencySymbols);
 
+            //return new CryptoQuote();
+
             await Task.WhenAll(cryptoCurrencyPriceQuoteTask, cryptoCurrencyPriceQuoteTask);
 
             return CreateQuote(cryptoCurrencyPriceQuoteTask.Result, exchangeRatesTask.Result);
@@ -52,13 +54,22 @@ namespace CryptoCheck.Services
             var exchangeBaseCurrencySymbol = exchangeRates.BaseSymbol;
 
             //determine the conversion ratio between them using the exchange rates
-            var conversionRatioFromExchangeBaseToCryptoCurrencyBase = exchangeRates.Rates[exchangeBaseCurrencySymbol]/exchangeRates.Rates[cryptoCurrencyPriceSymbol];
+            decimal conversionRatioFromExchangeBaseToCryptoCurrencyBase;
+            if (cryptoCurrencyPriceSymbol == exchangeBaseCurrencySymbol)
+            {
+                conversionRatioFromExchangeBaseToCryptoCurrencyBase = 1;
+            }
+            else
+            {
+                conversionRatioFromExchangeBaseToCryptoCurrencyBase = exchangeRates.Rates[exchangeBaseCurrencySymbol]/exchangeRates.Rates[cryptoCurrencyPriceSymbol];
+            }
+
 
             //convert the crypto price to the base exchange rate
             var cryptoPriceInExchangeRateBase = cryptoCurrencyPrice.Price * conversionRatioFromExchangeBaseToCryptoCurrencyBase;
 
             //loop and convert all currencies
-            var currencyQuotes = new Dictionary<string, double>();
+            var currencyQuotes = new Dictionary<string, decimal>();
 
             foreach (var exchangeRate in exchangeRates.Rates)
             {

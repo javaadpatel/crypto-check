@@ -18,12 +18,11 @@ namespace CryptoCheck.AutoMapper.Profiles
                 .ForMember(
                     dest => dest.CryptoSymbol,
                     opt => opt.MapFrom(src => src.Symbol)
-                )
-                .ForMember(
-                    dest => dest.CurrencySymbol,
-                    opt => opt.MapFrom(src => "USD") //TODO: Don't hardcode the mapping to USD
-                )
-                ;
+                );
+
+
+            CreateMap<Core.Models.CryptoCurrency, Services.CoinMarketCap.Models.CoinMarketCapCryptoCurrencyMap>()
+                .ReverseMap();
         }
     }
 }

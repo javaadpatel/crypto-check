@@ -22,6 +22,7 @@ namespace CryptoCheck.Services.CoinMarketCap
         private readonly ILogger<ICryptoPriceService> _logger;
         private readonly string _baseUrl;
         private readonly string _auxFields;
+        private readonly string _baseCurrencySymbol;
 
         public CoinMarketCapApiService(HttpClient httpClient, IMapper mapper, IConfiguration configuration, IApiBaseService apiBaseService, ILogger<ICryptoPriceService> logger)
         {
@@ -33,17 +34,53 @@ namespace CryptoCheck.Services.CoinMarketCap
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration)); 
             _baseUrl = configuration["coinMarketCapApi:baseUrl"];
             _auxFields = configuration["coinMarketCapApi:auxFields"];
+            _baseCurrencySymbol = configuration["coinMarketCapApi:baseCurrencySymbol"];
         }
 
         public async Task<CryptoCurrencyPrice> GetCryptoPriceAsync(string symbol)
         {
-            var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/quotes/latest?symbol={symbol.ToLower()}&aux={_auxFields}");
+            //construct request uri
+            var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/quotes/latest?symbol={symbol.ToLower()}&aux={_auxFields}&convert={_baseCurrencySymbol}");
 
-            var quoteData = await _apiBaseService.ExecuteRequest<Models.CryptoCurrencyQuoteData>(_httpClient, uri, $@"$.data.{symbol.ToUpper()}");
+            //get raw string response
+            var quoteResponseString = await _apiBaseService.ExecuteRequest(_httpClient, uri);
 
-            var cryptoCurrencyPrice = _mapper.Map<CryptoCurrencyPrice>(quoteData);
+            //extract root quote data
+            var rootQuoteDataJsonPathSelector = $@"$.data.{symbol.ToUpper()}";
+            var jToken = JToken.Parse(quoteResponseString);
+            var rootQuoteData = JsonConvert.DeserializeObject<Models.CryptoCurrencyQuoteData>(jToken.SelectToken(rootQuoteDataJsonPathSelector)?.ToString());
+
+            //extract currency specific data
+            var currencySpecificQuoteJsonPathSelector = $@"{rootQuoteDataJsonPathSelector}.quote.{_baseCurrencySymbol.ToUpper()}";
+            var currencySpecificQuote = JsonConvert.DeserializeObject<Models.CurrencyQuote>(jToken.SelectToken(currencySpecificQuoteJsonPathSelector)?.ToString());
+
+            //assign current
+            rootQuoteData.Quote.CurrencyQuote = currencySpecificQuote;
+
+            var cryptoCurrencyPrice = _mapper.Map<CryptoCurrencyPrice>(rootQuoteData);
+
+            //set base currency
+            cryptoCurrencyPrice.CurrencySymbol = _baseCurrencySymbol.ToUpper();
 
             return cryptoCurrencyPrice;
+        }
+
+        public async Task<IList<CryptoCurrency>> GetAllCryptoCurrencies()
+        {
+            //construct request uri
+            var uri = new Uri($"{_baseUrl.Trim('/')}/cryptocurrency/map");
+
+            //get raw string response
+            var quoteResponseString = await _apiBaseService.ExecuteRequest(_httpClient, uri);
+
+            //extract 
+            var cryptoCurrencysonPathSelector = $@"$.data";
+            var jToken = JToken.Parse(quoteResponseString);
+            var cryptoCurrencyMaps = JsonConvert.DeserializeObject<List<Models.CoinMarketCapCryptoCurrencyMap>>(jToken.SelectToken(cryptoCurrencysonPathSelector)?.ToString());
+
+            var cryptoCurrencies = _mapper.Map<List<CryptoCurrency>> (cryptoCurrencyMaps);
+
+            return cryptoCurrencies;
         }
     }
 }

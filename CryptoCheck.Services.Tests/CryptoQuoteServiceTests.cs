@@ -47,7 +47,7 @@ namespace CryptoCheck.Services.Tests
                     CurrencySymbol = "USD",
                     LastUpdated = DateTime.Now,
                     Name = "Bitcoin",
-                    Price = 39488.91493854606
+                    Price = 39488.91493854606m
                 });
 
             _exchangeRateService
@@ -57,13 +57,13 @@ namespace CryptoCheck.Services.Tests
                     BaseSymbol = "EUR",
                     Timestamp = 1622131924,
                     Date = DateTimeOffset.Now,
-                    Rates = new Dictionary<string, double>
+                    Rates = new Dictionary<string, decimal>
                     {
                         { "EUR", 1 },
-                        { "BRL", 6.424691 },
-                        { "GBP", 0.860088 },
-                        { "AUD", 1.576404},
-                        {"USD", 1.219222}
+                        { "BRL", 6.424691m },
+                        { "GBP", 0.860088m },
+                        { "AUD", 1.576404m},
+                        {"USD", 1.219222m}
                     }
                 });
 
@@ -75,16 +75,19 @@ namespace CryptoCheck.Services.Tests
             Assert.AreEqual(_cryptoCurrencySymbol, result.Symbol);
             Assert.That(DateTime.UtcNow, Is.EqualTo(result.IssuedAt).Within(TimeSpan.FromMinutes(1.0)));
 
-            var expectedPrices = new Dictionary<string, double>
+            var expectedPrices = new Dictionary<string, decimal>
             {
-                { "EUR", 32388.617445014988 },
-                { "BRL", 208086.8590014308 },
-                { "GBP", 27857.061201048051 },
-                { "AUD", 51057.5460947914},
-                { "USD", 39488.914938546062}
+                { "EUR", 32388.617445014988m },
+                { "BRL", 208086.8590014308m },
+                { "GBP", 27857.061201048051m },
+                { "AUD", 51057.5460947914m},
+                { "USD", 39488.914938546062m}
             };
 
-            Assert.AreEqual(expectedPrices, result.CurrencyQuotes);
+            foreach (var currencyQuote in result.CurrencyQuotes)
+            {
+                Assert.That(expectedPrices[currencyQuote.Key], Is.EqualTo(currencyQuote.Value).Within(0.00001m));
+            }
         }
     }
 }

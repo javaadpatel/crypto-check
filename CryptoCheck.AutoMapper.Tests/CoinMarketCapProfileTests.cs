@@ -18,7 +18,7 @@ namespace CryptoCheck.AutoMapper.Tests
         }
 
         [Test]
-        public void GivenMappingProfile_WhenMappingFromCryptoCurrencyQuoteDate_ShouldMapCorrectlyToCryptoCurrencyPrice()
+        public void GivenMappingProfile_WhenMappingFromCryptoCurrencyQuoteData_ShouldMapCorrectlyToCryptoCurrencyPrice()
         {
             //arrange
             var mapper = _sut.CreateMapper();
@@ -31,7 +31,7 @@ namespace CryptoCheck.AutoMapper.Tests
                 {
                     CurrencyQuote = new Services.CoinMarketCap.Models.CurrencyQuote
                     {
-                        Price = 100.12
+                        Price = 100.12m
                     }
                 },
                 LastUpdated = timeNow
@@ -40,9 +40,8 @@ namespace CryptoCheck.AutoMapper.Tests
             var cryptoCurrencyPrice = new CryptoCurrencyPrice()
             {
                 CryptoSymbol = "BTC",
-                CurrencySymbol = "USD",
                 Name = "Bitcoin",
-                Price = 100.12,
+                Price = 100.12m,
                 LastUpdated = timeNow
             };
 
@@ -54,7 +53,34 @@ namespace CryptoCheck.AutoMapper.Tests
             Assert.That(timeNow, Is.EqualTo(result.LastUpdated).Within(TimeSpan.FromMinutes(1.0)));
             Assert.AreEqual(100.12, result.Price);
             Assert.AreEqual("Bitcoin", result.Name);
-            Assert.AreEqual("USD", result.CurrencySymbol);
+        }
+
+        [Test]
+        public void GivenMappingProfile_WhenMappingFromCryptoCurrencyMap_ShouldMapCorrectlyToCryptoCurrency()
+        {
+            //arrange
+            var mapper = _sut.CreateMapper();
+            var cryptoCurrencyMap = new Services.CoinMarketCap.Models.CoinMarketCapCryptoCurrencyMap
+            {
+                Id = 1,
+                Name = "Bitcoin",
+                Rank = 1,
+                Slug = "btc",
+                Symbol = "btc"
+            };
+
+            var expectedCryptoCurrency = new CryptoCurrency
+            {
+                Name = "Bitcoin",
+                Symbol = "btc"
+            };
+
+            //act
+            var result = mapper.Map<CryptoCurrency>(cryptoCurrencyMap);
+
+            //assert
+            Assert.AreEqual(expectedCryptoCurrency.Name, result.Name);
+            Assert.AreEqual(expectedCryptoCurrency.Symbol, result.Symbol);
         }
     }
 }

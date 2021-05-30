@@ -10,5 +10,7 @@ namespace CryptoCheck.Core.Contracts
     public interface ICryptoPriceService
     {
         Task<CryptoCurrencyPrice> GetCryptoPriceAsync(string symbol);
+
+        Task<IList<CryptoCurrency>> GetAllCryptoCurrencies();
     }
 }

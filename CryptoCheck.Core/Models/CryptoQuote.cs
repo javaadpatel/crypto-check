@@ -21,7 +21,7 @@ namespace CryptoCheck.Core.Models
         /// <summary>
         /// The price of the cryptocurrency quoted in multiple currencies
         /// </summary>
-        public Dictionary<string, double> CurrencyQuotes { get; set; }
+        public Dictionary<string, decimal> CurrencyQuotes { get; set; }
 
         /// <summary>
         /// Indicates if the quote was a cached quote or a newly generated quote

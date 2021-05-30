@@ -24,10 +24,10 @@ namespace CryptoCheck.AutoMapper.Tests
             //arrange
             var mapper = _sut.CreateMapper();
             var timeNow = DateTimeOffset.UtcNow;
-            var currencyRates = new Dictionary<string, double>
+            var currencyRates = new Dictionary<string, decimal>
             {
                 {"EUR", 1 },
-                { "USD", 1.225}
+                { "USD", 1.225m}
             };
             var exchangeRatesApiResponseModel = new Services.ExchangeRatesApi.Models.ExchangeRates
             {

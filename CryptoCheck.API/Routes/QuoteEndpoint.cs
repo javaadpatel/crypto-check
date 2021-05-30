@@ -14,17 +14,20 @@ using System.Net;
 using FluentValidation;
 using System.Linq;
 using System.Net.Http;
+using System.Collections.Generic;
 
 namespace CryptoCheck.API.Routes
 {
     public class QuoteEndpoint
     {
         private readonly ICryptoQuoteService _cryptoQuoteService;
+        private readonly ICryptoPriceService _cryptoPriceService;
         private readonly IValidator<CryptoQuoteRequest> _quoteRequestValidator;
 
-        public QuoteEndpoint(ICryptoQuoteService cryptoQuoteService, IValidator<CryptoQuoteRequest> quoteRequestValidator)
+        public QuoteEndpoint(ICryptoQuoteService cryptoQuoteService, ICryptoPriceService cryptoPriceService, IValidator<CryptoQuoteRequest> quoteRequestValidator)
         {
             _cryptoQuoteService = cryptoQuoteService ?? throw new ArgumentNullException(nameof(cryptoQuoteService));
+            _cryptoPriceService = cryptoPriceService ?? throw new ArgumentNullException(nameof(cryptoPriceService));
             _quoteRequestValidator = quoteRequestValidator ?? throw new ArgumentNullException(nameof(quoteRequestValidator));
         }
 
@@ -60,5 +63,22 @@ namespace CryptoCheck.API.Routes
             }
 
         }
+    
+        [SwaggerOperation("Search for cryptocurrency")]
+        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(IList<CryptoCurrency>))]
+        [FunctionName(nameof(QuoteEndpoint)+ "_" + nameof(Search))]
+        public async Task<IActionResult> Search(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{searchTerm}")] HttpRequestMessage httpRequest,
+            string searchTerm,
+            ILogger log
+        )
+        {
+            var allCryptoCurrencies = await _cryptoPriceService.GetAllCryptoCurrencies();
+
+            var possibleCryptoCurrencies = allCryptoCurrencies.Where(c => c.Symbol.Contains(searchTerm.ToUpper())).ToList();
+
+            return new OkObjectResult(possibleCryptoCurrencies);
+        }
+    
     }
 }
