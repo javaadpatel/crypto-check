@@ -2,13 +2,8 @@
 using CryptoCheck.Core.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CryptoCheck.Services.ExchangeRatesApi
@@ -37,21 +32,21 @@ namespace CryptoCheck.Services.ExchangeRatesApi
         public async Task<Core.Models.ExchangeRates> GetExchangeRatesAsync(string baseCurrencySymbol, string conversionCurrencySymbols)
         {
             //testing
-//            JObject o = JObject.Parse(@"{
-//    'success': true,
-//    'timestamp': 1622122024,
-//    'base': 'EUR',
-//    'date': '2021-05-27',
-//    'rates': {
-//        'EUR': 1,
-//        'BRL': 6.448241,
-//        'GBP': 0.860294,
-//        'AUD': 1.574412,
-//        'USD': 1.21865
-//    }
-//}");
+            //            JObject o = JObject.Parse(@"{
+            //    'success': true,
+            //    'timestamp': 1622122024,
+            //    'base': 'EUR',
+            //    'date': '2021-05-27',
+            //    'rates': {
+            //        'EUR': 1,
+            //        'BRL': 6.448241,
+            //        'GBP': 0.860294,
+            //        'AUD': 1.574412,
+            //        'USD': 1.21865
+            //    }
+            //}");
 
-//            var test = JsonConvert.DeserializeObject<Models.ExchangeRates>(o.ToString());
+            //            var test = JsonConvert.DeserializeObject<Models.ExchangeRates>(o.ToString());
 
             var uri = new Uri($"{_baseUrl}/latest?access_key={_apiKey}&base = {baseCurrencySymbol} &symbols={conversionCurrencySymbols}");
             var exchangeRatesApiResponse = await _apiBaseService.ExecuteRequest<Models.ExchangeRates>(_httpClient, uri);

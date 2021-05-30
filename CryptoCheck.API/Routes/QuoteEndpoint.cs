@@ -1,20 +1,17 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using CryptoCheck.Core.Contracts;
+using CryptoCheck.Core.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using CryptoCheck.Core.Contracts;
-using CryptoCheck.Core.Models;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Net;
-using FluentValidation;
-using System.Linq;
-using System.Net.Http;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CryptoCheck.API.Routes
 {
@@ -32,7 +29,7 @@ namespace CryptoCheck.API.Routes
         }
 
         [SwaggerOperation("Get cryptocurrency quote")]
-        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(CryptoQuote))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(CryptoQuote))]
         [FunctionName(nameof(QuoteEndpoint) + "_" + nameof(Quote))]
         public async Task<IActionResult> Quote(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "quote/{symbol}")] HttpRequestMessage httpRequest,
@@ -45,7 +42,8 @@ namespace CryptoCheck.API.Routes
 
             if (!validationResult.IsValid)
             {
-                return new BadRequestObjectResult(validationResult.Errors.Select(e => new {
+                return new BadRequestObjectResult(validationResult.Errors.Select(e => new
+                {
                     Field = e.PropertyName,
                     Error = e.ErrorMessage
                 }));
@@ -69,10 +67,10 @@ namespace CryptoCheck.API.Routes
             }
 
         }
-    
+
         [SwaggerOperation("Search for cryptocurrency")]
-        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(IList<CryptoCurrency>))]
-        [FunctionName(nameof(QuoteEndpoint)+ "_" + nameof(Search))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IList<CryptoCurrency>))]
+        [FunctionName(nameof(QuoteEndpoint) + "_" + nameof(Search))]
         public async Task<IActionResult> Search(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{searchTerm}")] HttpRequestMessage httpRequest,
             string searchTerm,

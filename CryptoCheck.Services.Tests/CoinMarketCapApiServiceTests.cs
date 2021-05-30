@@ -7,10 +7,8 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +30,7 @@ namespace CryptoCheck.Services.Tests
         private IMapper _mapper;
         private IConfiguration _configuration;
         private IApiBaseService _apiBaseService;
+        private ICacheService _cacheService;
         private ILogger<ICryptoPriceService> _logger;
         private string _cryptoCurrencySymbol;
 
@@ -48,10 +47,11 @@ namespace CryptoCheck.Services.Tests
             _configuration["coinMarketCapApi:baseCurrencySymbol"].Returns("EUR");
 
             _apiBaseService = Substitute.For<IApiBaseService>();
+            _cacheService = Substitute.For<ICacheService>();
             _logger = Substitute.For<ILogger<ICryptoPriceService>>();
             _cryptoCurrencySymbol = "BTC";
 
-            _sut = new CoinMarketCapApiService(_httpClient, _mapper, _configuration, _apiBaseService, _logger);
+            _sut = new CoinMarketCapApiService(_httpClient, _mapper, _configuration, _apiBaseService, _cacheService, _logger);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace CryptoCheck.Services.Tests
                 .Returns(quoteDataString);
 
             _mapper
-                .Map<CryptoCurrencyPrice>(Arg.Any< CoinMarketCap.Models.CryptoCurrencyQuoteData>())
+                .Map<CryptoCurrencyPrice>(Arg.Any<CoinMarketCap.Models.CryptoCurrencyQuoteData>())
                 .Returns(cryptoCurrencyPrice);
 
             //act
