@@ -1,5 +1,7 @@
 # CryptoCheck
 
+[Checkout the demo](https://cryptocheck-web.azurewebsites.net/)
+
 A web application for quickly checking the price of cryptocurrencies in multiple FIAT currencies
 
 ![CryptoCheck Quote](/resources/images/cryptocheck.png)
