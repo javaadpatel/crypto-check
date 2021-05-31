@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CryptoCheck.Core.Models
+﻿namespace CryptoCheck.Core.Models
 {
     public class CryptoCurrency
     {

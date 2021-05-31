@@ -3,7 +3,6 @@ import * as moment from "moment";
 import axios, { AxiosInstance } from "axios";
 import { Config } from "../Config/Config";
 import { CryptoQuote } from "../Models/Api/CryptoQuote";
-import { CryptoQuoteRequest } from "../Models/Api/CryptoQuoteRequest";
 import { CryptoQuoteError } from "../Models/Api/CryptoQuoteError";
 
 //define context interface

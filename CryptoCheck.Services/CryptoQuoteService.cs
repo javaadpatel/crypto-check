@@ -1,13 +1,8 @@
 ﻿using CryptoCheck.Core.Contracts;
 using CryptoCheck.Core.Models;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CryptoCheck.Services
@@ -26,7 +21,7 @@ namespace CryptoCheck.Services
 
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _baseCurrencySymbol = configuration["exchangeRatesApi:baseCurrencySymbol"];
-            _conversionCurrencySymbols = configuration["exchangeRatesApi:conversionCurrencySymbols"];            
+            _conversionCurrencySymbols = configuration["exchangeRatesApi:conversionCurrencySymbols"];
         }
 
 
@@ -58,7 +53,7 @@ namespace CryptoCheck.Services
             }
             else
             {
-                conversionRatioFromExchangeBaseToCryptoCurrencyBase = exchangeRates.Rates[exchangeBaseCurrencySymbol]/exchangeRates.Rates[cryptoCurrencyPriceSymbol];
+                conversionRatioFromExchangeBaseToCryptoCurrencyBase = exchangeRates.Rates[exchangeBaseCurrencySymbol] / exchangeRates.Rates[cryptoCurrencyPriceSymbol];
             }
 
             //convert the crypto price to the base exchange rate

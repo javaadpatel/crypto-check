@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +38,15 @@ namespace CryptoCheck.Services
         {
             var cacheItem = JsonConvert.SerializeObject(item);
 
-            await _cache.SetStringAsync(cacheKey, cacheItem, cancellationToken);
+            await _cache.SetStringAsync(
+                cacheKey,
+                cacheItem,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = ICacheService.absoluteExpirationInHours
+                },
+                cancellationToken
+            );
         }
     }
 }

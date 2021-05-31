@@ -1,10 +1,6 @@
 ﻿using CryptoCheck.Core.Models;
 using CryptoCheck.Core.Validators;
-using FluentValidation.TestHelper;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoCheck.Core.Tests.Validators
 {

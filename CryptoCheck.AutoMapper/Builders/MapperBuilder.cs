@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using CryptoCheck.AutoMapper.Profiles;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CryptoCheck.AutoMapper.Builders
 {
@@ -19,7 +17,7 @@ namespace CryptoCheck.AutoMapper.Builders
             }
         }
 
-        private static readonly Lazy<IMapper> _mapper = 
+        private static readonly Lazy<IMapper> _mapper =
             new Lazy<IMapper>(DefaultMapper, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
         public static IMapper Mapper

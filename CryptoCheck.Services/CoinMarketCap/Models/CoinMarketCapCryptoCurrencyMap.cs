@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CryptoCheck.Services.CoinMarketCap.Models
+﻿namespace CryptoCheck.Services.CoinMarketCap.Models
 {
     public class CoinMarketCapCryptoCurrencyMap
     {
