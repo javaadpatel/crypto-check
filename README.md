@@ -9,15 +9,9 @@ A web application for quickly checking the price of cryptocurrencies in multiple
 - [Quickstart](#quickstart)
 - [Architecture](#architecture)
 - [Setup](#setup)
-- [Deploying FloodRunner](#deploying-floodrunner)
-  - [1. Deploying Traefik](#1-deploying-traefik)
-  - [2. Deploying RabbitMq](#2-deploying-rabbitMq)
-  - [3. Deploying MongoDB](#3-deploying-mongoDB)
-  - [4. Deploying FloodRunner NestJs API](#4-deploying-floodrunner-nestjs-api)
-    - [4.1 Setting up Azure Blob Storage](#4.1-setting-up-azure-blob-storage)
-  - [5. Deploying FloodRunner React Web App](#5-deploying-floodRunner-react-web-app)
+- [Running the application](#running-the-application)
+- [Testing](#testing)
 - [Contributing](#contributing)
-- [Reporting Issues](#reporting-issues)
 
 ## QuickStart
 
@@ -47,7 +41,7 @@ The packages for the front-end need to installed. To do this, navigate to the `C
 
 The packages for the backend need to be installed, for this you will need the dotcore 3.1 framework installed. From the root folder execute:
 
-> dotnet restore CryptoCheck.sln
+> dotnet build CryptoCheck.sln
 
 ### Configuring the application
 
@@ -56,13 +50,23 @@ You will need to configure the API with your `Coin Market Cap` and `ExchangeRate
 - Insert the required API keys into the `local.template.settings.json` file
 - Rename the `local.template.settings.json` file to `local.settings.json`
 
-### Running the application
+## Running the application
 
 The application can be run using the following steps:
 
-- Run the API using `dotnet run` (from within the root folder)
+- Run the API from within an IDE or using the [Azure Functions Core tools](https://github.com/Azure/azure-functions-core-tools) execute the command `func start` (from within the `CryptoCheck.API` folder)
 - Run the front-end using `npm run start` (from within the `CryptoCheck.SPA` folder)
 
 ## Testing
 
+The API tests can be run by executing (from the root folder):
+
+> dotnet test CryptoCheck.sln
+
+The front-end tests can be run by executing( from the `CryptoCheck.SPA` folder):
+
+> npm run test
+
 ## Contributions
+
+Any contributions to this project are welcomed. Please open a PR or an issue if you need help using the project.
