@@ -4,7 +4,7 @@
 
 1. How long did you spend on the coding assignment? What would you add to your solution if you had more time? If you didn't spend much time on the coding assignment then use this as an opportunity to explain what you would add.
 
-   I spent a total of 20 hours on the assignment. There are a number of improvements that I would make to my solution, namely:
+   I spent a total of 23 hours on the assignment. There are a number of improvements that I would make to my solution, namely:
 
    - Performance:
 
