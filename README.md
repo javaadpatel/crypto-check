@@ -1,5 +1,7 @@
 # CryptoCheck
 
+[Checkout the demo](https://cryptocheck-web.azurewebsites.net/)
+
 A web application for quickly checking the price of cryptocurrencies in multiple FIAT currencies
 
 ![CryptoCheck Quote](/resources/images/cryptocheck.png)
@@ -15,7 +17,7 @@ A web application for quickly checking the price of cryptocurrencies in multiple
 
 ## QuickStart
 
-Enter the cryptocurrency's symbol (eg. BTC for bitcoin) and click `Get quote`.
+Enter the cryptocurrency's symbol (eg. BTC for bitcoin) and click `Get quote`. The maximum allowed symbol length is 4 and only letters are allowed.
 
 Validation will be applied on the cryptocurrency symbol to ensure that it meets the requirements for a symbol before being able to get a quote.
 
@@ -49,6 +51,8 @@ You will need to configure the API with your `CoinMarketCap` and `ExchangeRatesA
 
 - Insert the required API keys into the `local.template.settings.json` file
 - Rename the `local.template.settings.json` file to `local.settings.json`
+
+Additionally, the React front-end configuration can be found in the `config.js` file but this won't need to be changed unless you are deploying the front-end.
 
 ## Running the application
 

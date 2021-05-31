@@ -4,20 +4,20 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-    "retryPolicy:retryCount": 3,
-    "retryPolicy:timeoutInSeconds": 60,
+    "retryPolicy_retryCount": 3,
+    "retryPolicy_timeoutInSeconds": 60,
 
-    "httpClient:userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
+    "httpClient_userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
 
-    "exchangeRatesApi:apiKey": "<ExchangeRatesApi API Key>",
-    "exchangeRatesApi:baseUrl": "http://api.exchangeratesapi.io/v1/",
-    "exchangeRatesApi:baseCurrencySymbol": "EUR",
-    "exchangeRatesApi:conversionCurrencySymbols": "EUR,BRL,GBP,AUD,USD",
+    "exchangeRatesApi_apiKey": "<ExchangeRatesApi API Key>",
+    "exchangeRatesApi_baseUrl": "http://api.exchangeratesapi.io/v1/",
+    "exchangeRatesApi_baseCurrencySymbol": "EUR",
+    "exchangeRatesApi_conversionCurrencySymbols": "EUR,BRL,GBP,AUD,USD",
 
-    "coinMarketCapApi:apiKey": "<CoinMarketCap API Key>",
-    "coinMarketCapApi:baseUrl": "https://pro-api.coinmarketcap.com/v1/",
-    "coinMarketCapApi:auxFields": "is_active",
-    "coinMarketCapApi:baseCurrencySymbol": "EUR"
+    "coinMarketCapApi_apiKey": "<CoinMarketCap API Key>",
+    "coinMarketCapApi_baseUrl": "https://pro-api.coinmarketcap.com/v1/",
+    "coinMarketCapApi_auxFields": "is_active",
+    "coinMarketCapApi_baseCurrencySymbol": "EUR"
   },
   "Host": {
     "LocalHttpPort": 7071,

@@ -33,9 +33,9 @@ namespace CryptoCheck.Services.CoinMarketCap
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _baseUrl = configuration["coinMarketCapApi:baseUrl"];
-            _auxFields = configuration["coinMarketCapApi:auxFields"];
-            _baseCurrencySymbol = configuration["coinMarketCapApi:baseCurrencySymbol"];
+            _baseUrl = configuration["coinMarketCapApi_baseUrl"];
+            _auxFields = configuration["coinMarketCapApi_auxFields"];
+            _baseCurrencySymbol = configuration["coinMarketCapApi_baseCurrencySymbol"];
         }
 
         public async Task<CryptoCurrencyPrice> GetCryptoPriceAsync(string symbol)

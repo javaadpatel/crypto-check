@@ -19,6 +19,7 @@ namespace CryptoCheck.Core.Tests.Validators
         [TestCase("btc")]
         [TestCase("ETH")]
         [TestCase("eth")]
+        [TestCase("SALT")]
         public void GivenValidSymbol_WhenValidating_ShouldPassValidation(string symbol)
         {
             //arrange
