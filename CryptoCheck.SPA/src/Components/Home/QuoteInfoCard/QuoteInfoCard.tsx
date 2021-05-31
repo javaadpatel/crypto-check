@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Card, Icon, Item, Table, Message } from "semantic-ui-react";
+import { Card, Table, Message } from "semantic-ui-react";
 import { useCryptoCheck } from "../../../Contexts/CryptoCheck-Context";
 import { CryptoQuote } from "../../../Models/Api/CryptoQuote";
 import { CryptoQuoteError } from "../../../Models/Api/CryptoQuoteError";

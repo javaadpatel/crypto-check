@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { Form, Button, Message, Input } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import * as yup from "yup";
 import _ from "lodash";
 import { useCryptoCheck } from "../../../Contexts/CryptoCheck-Context";

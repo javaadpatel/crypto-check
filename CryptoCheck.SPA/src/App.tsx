@@ -3,8 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import NavBar from "./Components/Shared/NavBar/NavBar";
 
-// import "./App.css";
-
 function App(): JSX.Element {
   return (
     <Container>
