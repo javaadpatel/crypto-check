@@ -1,6 +1,5 @@
 ﻿using CryptoCheck.Core.Contracts;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;

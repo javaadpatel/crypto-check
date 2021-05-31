@@ -39,8 +39,8 @@ namespace CryptoCheck.Services
             var cacheItem = JsonConvert.SerializeObject(item);
 
             await _cache.SetStringAsync(
-                cacheKey, 
-                cacheItem, 
+                cacheKey,
+                cacheItem,
                 new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = ICacheService.absoluteExpirationInHours
