@@ -31,7 +31,7 @@ The API's functionality can be seen through the SwaggerUI which will be accessib
 
 ## Setup
 
-These are the basic steps to follow when running the application locally.
+These are the basic steps to follow when configuring the application locally.
 
 ### Installing the application
 
@@ -39,13 +39,13 @@ The packages for the front-end need to installed. To do this, navigate to the `C
 
 > npm install
 
-The packages for the backend need to be installed, for this you will need the dotcore 3.1 framework installed. From the root folder execute:
+The backend need to be built, for this you will need the dotnet core 3.1 framework installed. From the root folder execute:
 
 > dotnet build CryptoCheck.sln
 
 ### Configuring the application
 
-You will need to configure the API with your `Coin Market Cap` and `ExchangeRatesApi` keys. To do this:
+You will need to configure the API with your `CoinMarketCap` and `ExchangeRatesApi` keys. To do this:
 
 - Insert the required API keys into the `local.template.settings.json` file
 - Rename the `local.template.settings.json` file to `local.settings.json`

@@ -36,29 +36,5 @@ namespace CryptoCheck.Services
             }
 
         }
-
-        public async Task<T> ExecuteRequest<T>(HttpClient httpClient, Uri uri)
-        {
-            HttpResponseMessage response;
-            string responseContent;
-            HttpStatusCode responseStatusCode;
-            T result;
-            try
-            {
-                response = await httpClient.GetAsync(uri);
-                responseStatusCode = response.StatusCode;
-                responseContent = await response.Content.ReadAsStringAsync();
-
-                result = JsonConvert.DeserializeObject<T>(responseContent);
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Exception occurred {ex.Message}");
-                throw new Exception("Exception occurred making API request");
-            }
-
-        }
     }
 }

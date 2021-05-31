@@ -2,6 +2,7 @@
 using CryptoCheck.Core.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -32,7 +33,8 @@ namespace CryptoCheck.Services.ExchangeRatesApi
         public async Task<Core.Models.ExchangeRates> GetExchangeRatesAsync(string baseCurrencySymbol, string conversionCurrencySymbols)
         {
             var uri = new Uri($"{_baseUrl}/latest?access_key={_apiKey}&base = {baseCurrencySymbol} &symbols={conversionCurrencySymbols}");
-            var exchangeRatesApiResponse = await _apiBaseService.ExecuteRequest<Models.ExchangeRates>(_httpClient, uri);
+            var exchangeRatesApiStringResponse = await _apiBaseService.ExecuteRequest(_httpClient, uri);
+            var exchangeRatesApiResponse = JsonConvert.DeserializeObject<Models.ExchangeRates>(exchangeRatesApiStringResponse);
 
             var exchangeRates = _mapper.Map<Core.Models.ExchangeRates>(exchangeRatesApiResponse);
 

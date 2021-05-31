@@ -62,7 +62,6 @@ namespace CryptoCheck.API.Routes
             }
             catch
             {
-                //TODO: We can cross reference the symbol, maybe return from the service layer a more detailed error message to use here
                 return new BadRequestObjectResult(new { Message = $"Unable to generate quote for {cryptoQuoteRequest.Symbol}" });
             }
 

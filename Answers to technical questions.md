@@ -4,7 +4,7 @@
 
 1. How long did you spend on the coding assignment? What would you add to your solution if you had more time? If you didn't spend much time on the coding assignment then use this as an opportunity to explain what you would add.
 
-   I spent a total of 22 hours on the assignment. There are a number of improvements that I would make to my solution, namely:
+   I spent a total of 20 hours on the assignment. There are a number of improvements that I would make to my solution, namely:
 
    - Performance:
 
@@ -22,6 +22,7 @@
 
      - Implement a dropdown type search for the user input, this could use the basic search endpoint that I created and provide the user with a list of cryptocurrencies to choose from. They could then type either the symbol or the name and know whether we support it.
      - Keep a history of quotes on the front-end for a user to quickly see quotes that they've requested in the past.
+     - From my understanding of the CoinMarketCap api, you can get a collision between two cryptocurrencies that have the same symbol, which is why they recommend using the ID. I would develop this edge case further by either displaying quotes for both cryptocurrencies or giving the user an option to select which one (this would fit in with the search functionality).
 
    - Developer Experience:
      - Create a CI/CD pipeline with the four stages:
@@ -33,14 +34,54 @@
 
 2. What was the most useful feature that was added to the latest version of your language of choice? Please include a snippet of code that shows how you've used it.
 
-   The latest version of c# is version 9, I am currently reading a book called "C# 9 in depth" to learn more about it. The Azure Functions runtime is currently limited to .Net Core 3.1 so the latest usable C# version is 8. In C# 8, the most useful feature has been async streams.
-   ????
+   The latest version of C# is version 9, I am currently reading a book called `C# 9.0 in a Nutshell` to learn more about it. The Azure Functions runtime is currently limited to .Net Core 3.1 so the latest usable C# version is 8.
+
+   In C# 8, the most useful feature has been default interface methods and properties. This allows for introducing new functionality without breaking existing clients. I've demonstrated how this could be used in one of the interfaces and implementation of that interface
+
+   ```
+    public interface ICacheService
+    {
+        public static TimeSpan absoluteExpirationInHours = new TimeSpan(24,0,0); // 24 hours
+
+        ...
+    }
+
+   ```
+
+   ```
+    public class CacheService : ICacheService
+    {
+        private readonly IDistributedCache _cache;
+
+        public CacheService(IDistributedCache cache)
+        {
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        }
+
+        public async Task SetItemAsync<T>(string cacheKey, T item, CancellationToken cancellationToken)
+        {
+            var cacheItem = JsonConvert.SerializeObject(item);
+
+            await _cache.SetStringAsync(
+                cacheKey,
+                cacheItem,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = ICacheService.absoluteExpirationInHours //HERE
+                },
+                cancellationToken
+            );
+        }
+    }
+   ```
 
 3. How would you track down a performance issue in production? Have you ever had to do this?
 
-   In production, I would go to the monitoring tool, for example in Azure this would be Application Insights. I would then use it to identify which requests were slow and the scenario's for which they occur (eg. specific time of day or specific request parameters). Application insights shows you the execution time of your code as well as highlighting hotspots for performance and it shows execution time of external calls (eg. database calls). If its an external call like a database call that is slow then I would go to that databases metrics and see if its being overloaded, if not then maybe its related to the way we're querying it or the amount of data being retrieved, these could lead to changes to queries or changes to caching strategies for instance. If the slow performance was coming from inside the code base then I would run the code locally with a profiler while replicating the scenerio to isolate the poorly performing code.
+   In production, I would go to the monitoring tool, for example in Azure this would be Application Insights. I would then use it to identify which requests were slow and the scenario's for which they occur (eg. specific time of day or specific request parameters). Application insights shows you the execution time of your code as well as highlighting hotspots for performance and it shows execution time of external calls (eg. database calls).
 
-   I have been responsible for maintaining production systems and have had to do this exact thing either proactively because of alerts going off or reactively because of user's queries.
+   If its an external call like a database call that is slow then I would go to that databases' metrics and see if its being overloaded, if not then maybe its related to the way we're querying it or the amount of data being retrieved, these could lead to changes to queries or changes to caching strategies for instance. If the slow performance was coming from inside the code base then I would run the code locally with a profiler while replicating the scenerio to isolate the poorly performing code.
+
+   I have been responsible for maintaining production systems and have had to do this either proactively because of alerts going off or reactively because of user's queries.
 
 4. What was the latest technical book you have read or tech conference you have been to? What did you learn?
 
