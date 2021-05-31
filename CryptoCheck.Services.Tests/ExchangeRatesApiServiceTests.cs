@@ -33,8 +33,8 @@ namespace CryptoCheck.Services.Tests
             _mapper = Substitute.For<IMapper>();
             _configuration = Substitute.For<IConfiguration>();
 
-            _configuration["exchangeRatesApi:baseUrl"].Returns("https://notexchangeratesapi.com/v1/");
-            _configuration["exchangeRatesApi:apiKey"].Returns("apiKey");
+            _configuration["exchangeRatesApi_baseUrl"].Returns("https://notexchangeratesapi.com/v1/");
+            _configuration["exchangeRatesApi_apiKey"].Returns("apiKey");
 
             _apiBaseService = Substitute.For<IApiBaseService>();
             _logger = Substitute.For<ILogger<IExchangeRatesService>>();

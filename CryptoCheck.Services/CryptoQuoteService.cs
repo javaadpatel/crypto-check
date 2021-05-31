@@ -20,8 +20,8 @@ namespace CryptoCheck.Services
             _exchangeRateService = exchangeRateService ?? throw new ArgumentNullException(nameof(exchangeRateService));
 
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _baseCurrencySymbol = configuration["exchangeRatesApi:baseCurrencySymbol"];
-            _conversionCurrencySymbols = configuration["exchangeRatesApi:conversionCurrencySymbols"];
+            _baseCurrencySymbol = configuration["exchangeRatesApi_baseCurrencySymbol"];
+            _conversionCurrencySymbols = configuration["exchangeRatesApi_conversionCurrencySymbols"];
         }
 
 

@@ -42,9 +42,9 @@ namespace CryptoCheck.Services.Tests
             _mapper = Substitute.For<IMapper>();
             _configuration = Substitute.For<IConfiguration>();
 
-            _configuration["coinMarketCapApi:baseUrl"].Returns("https://notcoinmarketcap.com/v1/");
-            _configuration["coinMarketCapApi:auxFields"].Returns("is_active");
-            _configuration["coinMarketCapApi:baseCurrencySymbol"].Returns("EUR");
+            _configuration["coinMarketCapApi_baseUrl"].Returns("https://notcoinmarketcap.com/v1/");
+            _configuration["coinMarketCapApi_auxFields"].Returns("is_active");
+            _configuration["coinMarketCapApi_baseCurrencySymbol"].Returns("EUR");
 
             _apiBaseService = Substitute.For<IApiBaseService>();
             _cacheService = Substitute.For<ICacheService>();

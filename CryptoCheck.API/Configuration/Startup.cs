@@ -45,22 +45,22 @@ namespace CryptoCheck.API.Configuration
 
             builder.Services.AddHttpClient<ICryptoPriceService, CoinMarketCapApiService>(x =>
             {
-                x.DefaultRequestHeaders.Add("User-Agent", Environment.GetEnvironmentVariable("httpClient:userAgent"));
-                x.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", Environment.GetEnvironmentVariable("coinMarketCapApi:apiKey"));
+                x.DefaultRequestHeaders.Add("User-Agent", Environment.GetEnvironmentVariable("httpClient_userAgent"));
+                x.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", Environment.GetEnvironmentVariable("coinMarketCapApi_apiKey"));
             })
             .AddPolicyHandler((s, request) => PollyPolicies.GetRetryPolicy(
-                int.Parse(Environment.GetEnvironmentVariable("retryPolicy:retryCount")),
-                int.Parse(Environment.GetEnvironmentVariable("retryPolicy:timeoutInSeconds")),
+                int.Parse(Environment.GetEnvironmentVariable("retryPolicy_retryCount")),
+                int.Parse(Environment.GetEnvironmentVariable("retryPolicy_timeoutInSeconds")),
                 s.GetService<ILogger<ICryptoPriceService>>())
             );
 
             builder.Services.AddHttpClient<IExchangeRatesService, ExchangeRatesApiService>(x =>
             {
-                x.DefaultRequestHeaders.Add("User-Agent", Environment.GetEnvironmentVariable("httpClient:userAgent"));
+                x.DefaultRequestHeaders.Add("User-Agent", Environment.GetEnvironmentVariable("httpClient_userAgent"));
             })
             .AddPolicyHandler((s, request) => PollyPolicies.GetRetryPolicy(
-                int.Parse(Environment.GetEnvironmentVariable("retryPolicy:retryCount")),
-                int.Parse(Environment.GetEnvironmentVariable("retryPolicy:timeoutInSeconds")),
+                int.Parse(Environment.GetEnvironmentVariable("retryPolicy_retryCount")),
+                int.Parse(Environment.GetEnvironmentVariable("retryPolicy_timeoutInSeconds")),
                 s.GetService<ILogger<IExchangeRatesService>>())
             );
 

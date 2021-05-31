@@ -26,8 +26,8 @@ namespace CryptoCheck.Services.ExchangeRatesApi
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            _baseUrl = configuration["exchangeRatesApi:baseUrl"];
-            _apiKey = configuration["exchangeRatesApi:apiKey"];
+            _baseUrl = configuration["exchangeRatesApi_baseUrl"];
+            _apiKey = configuration["exchangeRatesApi_apiKey"];
         }
 
         public async Task<Core.Models.ExchangeRates> GetExchangeRatesAsync(string baseCurrencySymbol, string conversionCurrencySymbols)
