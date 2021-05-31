@@ -60,6 +60,7 @@ The application can be run using the following steps:
 
 - Run the API from within an IDE or using the [Azure Functions Core tools](https://github.com/Azure/azure-functions-core-tools) execute the command `func start` (from within the `CryptoCheck.API` folder)
 - Run the front-end using `npm run start` (from within the `CryptoCheck.SPA` folder)
+- Navigate to http://localhost:3000/ to start using the application
 
 ## Testing
 
