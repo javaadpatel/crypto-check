@@ -1,4 +1,5 @@
-﻿using CryptoCheck.Core.Contracts;
+﻿using CryptoCheck.Core.Builders;
+using CryptoCheck.Core.Contracts;
 using CryptoCheck.Core.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -31,13 +32,19 @@ namespace CryptoCheck.Services
 
             var exchangeRatesTask = _exchangeRateService.GetExchangeRatesAsync(_baseCurrencySymbol, _conversionCurrencySymbols);
 
-            await Task.WhenAll(cryptoCurrencyPriceQuoteTask, cryptoCurrencyPriceQuoteTask);
+            await Task.WhenAll(cryptoCurrencyPriceQuoteTask, exchangeRatesTask);
 
-            return CreateQuote(cryptoCurrencyPriceQuoteTask.Result, exchangeRatesTask.Result);
+            var currencyQuotes = GetCurrencyQuotes(cryptoCurrencyPriceQuoteTask.Result, exchangeRatesTask.Result);
+
+            return new CryptoQuoteBuilder()
+                .Named(cryptoCurrencyPriceQuoteTask.Result.Name)
+                .WithSymbol(cryptoCurrencyPriceQuoteTask.Result.CryptoSymbol)
+                .WithQuotes(currencyQuotes)
+                .IssuedAt(DateTime.UtcNow)
+                .IsCachedResponse(false)
+                .Build();
         }
-
-
-        private CryptoQuote CreateQuote(CryptoCurrencyPrice cryptoCurrencyPrice, ExchangeRates exchangeRates)
+        private Dictionary<string, decimal> GetCurrencyQuotes(CryptoCurrencyPrice cryptoCurrencyPrice, ExchangeRates exchangeRates)
         {
             //get currency that crypto price is quoted in
             var cryptoCurrencyPriceSymbol = cryptoCurrencyPrice.CurrencySymbol;
@@ -67,14 +74,7 @@ namespace CryptoCheck.Services
                 currencyQuotes.Add(exchangeRate.Key, exchangeRate.Value * cryptoPriceInExchangeRateBase);
             }
 
-            return new CryptoQuote
-            {
-                Name = cryptoCurrencyPrice.Name,
-                Symbol = cryptoCurrencyPrice.CryptoSymbol,
-                CurrencyQuotes = currencyQuotes,
-                IsCachedResponse = false,
-                IssuedAt = DateTime.UtcNow
-            };
+            return currencyQuotes;
         }
     }
 }
