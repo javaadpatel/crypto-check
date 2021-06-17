@@ -13,6 +13,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -40,8 +41,27 @@ namespace CryptoCheck.API.Configuration
             //register services
             builder
                 .Services
-                .AddSingleton<ICryptoQuoteService, CryptoQuoteService>()
                 .AddSingleton<IApiBaseService, ApiBaseService>();
+
+            //register quote services
+            builder
+                .Services
+                .AddSingleton<CryptoQuoteService>()
+                .AddSingleton<CryptoQuoteWithValidationService>();
+
+            //register quote service resolver
+            builder.Services.AddSingleton<CryptoQuoteServiceResolver>(serviceProvider => key =>
+            {
+                switch (key)
+                {
+                    case "quoteService":
+                        return serviceProvider.GetService<CryptoQuoteService>();
+                    case "quoteWithValidationService":
+                        return serviceProvider.GetService<CryptoQuoteWithValidationService>();
+                    default:
+                        throw new KeyNotFoundException();
+                }
+            });
 
             builder.Services.AddHttpClient<ICryptoPriceService, CoinMarketCapApiService>(x =>
             {

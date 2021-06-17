@@ -1,5 +1,6 @@
 using CryptoCheck.Core.Contracts;
 using CryptoCheck.Core.Models;
+using CryptoCheck.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,9 +22,9 @@ namespace CryptoCheck.API.Routes
         private readonly ICryptoPriceService _cryptoPriceService;
         private readonly IValidator<CryptoQuoteRequest> _quoteRequestValidator;
 
-        public QuoteEndpoint(ICryptoQuoteService cryptoQuoteService, ICryptoPriceService cryptoPriceService, IValidator<CryptoQuoteRequest> quoteRequestValidator)
+        public QuoteEndpoint(CryptoQuoteServiceResolver cryptoQuoteServiceResolver, ICryptoPriceService cryptoPriceService, IValidator<CryptoQuoteRequest> quoteRequestValidator)
         {
-            _cryptoQuoteService = cryptoQuoteService ?? throw new ArgumentNullException(nameof(cryptoQuoteService));
+            _cryptoQuoteService = cryptoQuoteServiceResolver("quoteWithValidationService") ?? throw new ArgumentNullException(nameof(cryptoQuoteServiceResolver));
             _cryptoPriceService = cryptoPriceService ?? throw new ArgumentNullException(nameof(cryptoPriceService));
             _quoteRequestValidator = quoteRequestValidator ?? throw new ArgumentNullException(nameof(quoteRequestValidator));
         }
@@ -51,13 +52,11 @@ namespace CryptoCheck.API.Routes
 
             try
             {
-                //first check if the cryptocurrency symbol is legitimate
-                if (!(await GetCryptoCurrenciesBySymbol(symbol)).Any())
-                {
-                    return new BadRequestObjectResult(new { Message = $"No cryptocurrency with the symbol '{cryptoQuoteRequest.Symbol}' could be found. Please check your spelling and try again." });
-                }
-
                 var quote = await _cryptoQuoteService.GenerateQuoteAsync(cryptoQuoteRequest);
+
+                if (!string.IsNullOrWhiteSpace(quote.ErrorMessage))
+                    return new BadRequestObjectResult(new { Message = quote.ErrorMessage});
+                
                 return new OkObjectResult(quote);
             }
             catch
