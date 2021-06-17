@@ -30,5 +30,10 @@ namespace CryptoCheck.Core.Models
         /// the quote was served from the cache
         /// </summary>
         public DateTime IssuedAt { get; set; }
+
+        /// <summary>
+        /// An associated error message if the quote fails to generate
+        /// </summary>
+        public string ErrorMessage { get; set; }
     }
 }

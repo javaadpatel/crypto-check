@@ -44,6 +44,7 @@ namespace CryptoCheck.Services
                 .IsCachedResponse(false)
                 .Build();
         }
+
         private Dictionary<string, decimal> GetCurrencyQuotes(CryptoCurrencyPrice cryptoCurrencyPrice, ExchangeRates exchangeRates)
         {
             //get currency that crypto price is quoted in
